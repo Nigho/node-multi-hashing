@@ -11,7 +11,6 @@ extern "C" {
     #include "scryptn.h"
     #include "skein.h"
     #include "x11.h"
-    #include "timetravel.h"
     #include "groestl.h"
     #include "blake.h"
     #include "fugue.h"
@@ -23,10 +22,9 @@ extern "C" {
     #include "nist5.h"
     #include "sha1.h",
     #include "x15.h",
+    #include "timetravel.h"
         #include "fresh.h"
 }
-
-#include "boolberry.h"
 
 using namespace node;
 using namespace v8;
@@ -452,41 +450,6 @@ Handle<Value> x13(const Arguments& args) {
     return scope.Close(buff->handle_);
 }
 
-Handle<Value> boolberry(const Arguments& args) {
-    HandleScope scope;
-
-    if (args.Length() < 2)
-        return except("You must provide two arguments.");
-
-    Local<Object> target = args[0]->ToObject();
-    Local<Object> target_spad = args[1]->ToObject();
-    uint32_t height = 1;
-
-    if(!Buffer::HasInstance(target))
-        return except("Argument 1 should be a buffer object.");
-
-    if(!Buffer::HasInstance(target_spad))
-        return except("Argument 2 should be a buffer object.");
-
-    if(args.Length() >= 3)
-        if(args[2]->IsUint32())
-            height = args[2]->ToUint32()->Uint32Value();
-        else
-            return except("Argument 3 should be an unsigned integer.");
-
-    char * input = Buffer::Data(target);
-    char * scratchpad = Buffer::Data(target_spad);
-    char output[32];
-
-    uint32_t input_len = Buffer::Length(target);
-    uint64_t spad_len = Buffer::Length(target_spad);
-
-    boolberry_hash(input, input_len, scratchpad, spad_len, output, height);
-
-    Buffer* buff = Buffer::New(output, 32);
-    return scope.Close(buff->handle_);
-}
-
 Handle<Value> nist5(const Arguments& args) {
     HandleScope scope;
 
@@ -615,7 +578,6 @@ void init(Handle<Object> exports) {
     exports->Set(String::NewSymbol("shavite3"), FunctionTemplate::New(shavite3)->GetFunction());
     exports->Set(String::NewSymbol("cryptonight"), FunctionTemplate::New(cryptonight)->GetFunction());
     exports->Set(String::NewSymbol("x13"), FunctionTemplate::New(x13)->GetFunction());
-    exports->Set(String::NewSymbol("boolberry"), FunctionTemplate::New(boolberry)->GetFunction());
     exports->Set(String::NewSymbol("nist5"), FunctionTemplate::New(nist5)->GetFunction());
     exports->Set(String::NewSymbol("sha1"), FunctionTemplate::New(sha1)->GetFunction());
     exports->Set(String::NewSymbol("x15"), FunctionTemplate::New(x15)->GetFunction());
