@@ -57,6 +57,25 @@
             "cflags_cc": [
                 "-std=c++0x"
             ],
+            "dependencies": ["timetravel"]
+        },
+        {
+            "target_name": "timetravel",
+            "sources": [
+                "timetravel.c"
+            ],
+            "include_dirs": [
+                "crypto",
+            ],
+            "direct_dependent_settings": {
+                "include_dirs":  [
+                    "crypto",
+                ],
+            },
+            "type": "static_library",
+            "cflags": [
+                "-std=gnu99"
+            ]
         }
     ]
 }
