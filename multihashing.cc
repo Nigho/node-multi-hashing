@@ -11,6 +11,7 @@ extern "C" {
     #include "scryptn.h"
     #include "skein.h"
     #include "x11.h"
+    #include "timetravel.h"
     #include "groestl.h"
     #include "blake.h"
     #include "fugue.h"
@@ -22,8 +23,7 @@ extern "C" {
     #include "nist5.h"
     #include "sha1.h",
     #include "x15.h",
-    #include "timetravel.h"
-	#include "fresh.h"
+        #include "fresh.h"
 }
 
 #include "boolberry.h"
